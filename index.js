@@ -33,6 +33,38 @@ function update() {
         ctx.fillStyle = square.background_color;
         ctx.fillRect(square.x, square.y, square.sizeX, square.sizeY);
 
+        ctx.fillStyle = 'black';
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var maxWidth = square.sizeX - 20;
+        var maxHeight = square.sizeY / 2;
+        var lineHeight = 25;
+        var x = square.x + square.sizeX / 2;
+        var y = square.y + square.sizeY / 2 - lineHeight / 2;
+        var texto = 'Ejemplo Ejemplo Ejemplo Ejemplo Ejemplo asd';
+        var palabras = texto.split(' ');
+        var linea = '';
+        var actHeight=0;
+        for (var i = 0; i < palabras.length; i++) {
+            var testLine = linea + palabras[i] + ' ';
+            var actWitdth = ctx.measureText(testLine).width;
+            
+            if (actWitdth > maxWidth) {
+                ctx.fillText(linea, x, y);
+
+                if((actHeight+lineHeight)<maxHeight){
+                    linea = palabras[i] + ' ';
+                    y += lineHeight;
+                    actHeight += lineHeight;
+                }else{
+                    break
+                }
+            } else {
+                linea = testLine;
+            }
+        }
+        ctx.fillText(linea, x, y);
 
     });
 
