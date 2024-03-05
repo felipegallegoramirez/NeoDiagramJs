@@ -9,19 +9,23 @@ canvas.addEventListener('mousedown', function (event) {
     click = true;
     first = false;
     resize = false;
+    container.classList.add("oculto")
 })
 canvas.addEventListener('mouseup', function () {
     click = false;
     first = false;
     resize = false;
+    container.classList.add("oculto")
 });
 
 canvas.addEventListener('dblclick', Seleccionar);
 
+var container = document.getElementById('container');
 
 
 // Definir las propiedades del cuadrado
 var square = [];
+var squareI = [];
 
 // Función para dibujar el cuadrado
 function update() {
@@ -32,8 +36,11 @@ function update() {
         ctx.strokeRect(square.x, square.y, square.sizeX, square.sizeY);
         ctx.fillStyle = square.background_color;
         ctx.fillRect(square.x, square.y, square.sizeX, square.sizeY);
+        ctx.fillStyle = "#00913f";
+        ctx.fillRect(square.x+square.sizeX-20, square.y,20, 20);
+        ctx.fillRect(square.x+square.sizeX-20, square.y+square.sizeY-20,20, 20);
 
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = square.text_color;
         ctx.font = '20px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -42,7 +49,7 @@ function update() {
         var lineHeight = 25;
         var x = square.x + square.sizeX / 2;
         var y = square.y + square.sizeY / 2 - lineHeight / 2;
-        var texto = 'Ejemplo Ejemplo Ejemplo Ejemplo Ejemplo asd';
+        var texto = square.text;
         var palabras = texto.split(' ');
         var linea = '';
         var actHeight=0;
@@ -79,7 +86,11 @@ function NewSquare() {
         sizeY: 100,
         background_color: "#ffffff",
         border_color: "#000000",
+        text_color: "#000000",
+        text:"Default"
+
     })
+    squareI=square.slice().reverse();
     update();
 }
 
@@ -92,9 +103,12 @@ var ult;
 
 
 function Seleccionar(event) {
+    container.classList.add("oculto")
     if (ult = 1) {
-        cuadrado_select.border_color = "#000000"
-        square[index_select] = cuadrado_select
+        if(cuadrado_select){
+            cuadrado_select.border_color = "#000000"
+            square[index_select] = cuadrado_select
+        }
     }
     ult = 1;
 
@@ -109,28 +123,52 @@ function Seleccionar(event) {
     var canvasY = y - rect.top;
     // Mostrar las coordenadas en la consola
 
-    cuadrado_select = square.find(data => {
+    cuadrado_select = squareI.find(data => {
         return canvasX >= data.x && canvasX <= (data.x + data.sizeX)
             && canvasY >= data.y && canvasY <= (data.y + data.sizeY);
     })
     if (cuadrado_select) {
         index_select = square.findIndex(data => data.id == cuadrado_select)
-        cuadrado_select.border_color = "#ff5733"
         square[index_select] = cuadrado_select
+        difx = cuadrado_select.x - canvasX
+        dify = cuadrado_select.y - canvasY
+        if ((difx + cuadrado_select.sizeX) <= 20 && (dify*-1) <= 20) {
+            container.style.left = x+difx+cuadrado_select.sizeX+7+"px";
+            container.style.top = cuadrado_select.y+22+"px";
+            container.classList.remove("oculto")
+        }else{
+            cuadrado_select.border_color = "#ff5733"
+        }
         update()
     } else {
         index_select = undefined
     }
+}
 
+document.getElementById("container-close").addEventListener("click",close)
 
+function close(){
+    container.classList.add("oculto")
+}
 
+document.getElementById("Actualizar").addEventListener("click",modificar)
+
+function modificar(){
+    cuadrado_select.text= document.getElementById("Title").value
+    cuadrado_select.text_color= document.getElementById("Color_text").value
+    cuadrado_select.background_color= document.getElementById("Color_background").value
+    
+    square[index_select] = cuadrado_select
+    update()
 }
 
 function Arrastrar(event) {
     if (click) {
         if (ult == 1) {
-            cuadrado_select.border_color = "#000000"
-            square[index_select] = cuadrado_select
+            if(cuadrado_select){
+                cuadrado_select.border_color = "#000000"
+                square[index_select] = cuadrado_select
+            }
         }
         ult = 0;
         // Obtener las coordenadas del clic
@@ -154,7 +192,7 @@ function Arrastrar(event) {
         }
         if (!first) {
 
-            cuadrado_select = square.find(data => {
+            cuadrado_select = squareI.find(data => {
                 return canvasX >= data.x && canvasX <= (data.x + data.sizeX)
                     && canvasY >= data.y && canvasY <= (data.y + data.sizeY);
             })
