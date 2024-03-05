@@ -5,6 +5,15 @@ var ctx = canvas.getContext('2d');
 var click = false;
 var first = false;
 var resize = false;
+
+
+var imagen_Resize = new Image();
+imagen_Resize.src = './Js/resize.png';
+var imagen_Info = new Image();
+imagen_Info.src = './Js/info.png';
+
+
+
 canvas.addEventListener('mousedown', function (event) {
     click = true;
     first = false;
@@ -36,9 +45,8 @@ function update() {
         ctx.strokeRect(square.x, square.y, square.sizeX, square.sizeY);
         ctx.fillStyle = square.background_color;
         ctx.fillRect(square.x, square.y, square.sizeX, square.sizeY);
-        ctx.fillStyle = "#00913f";
-        ctx.fillRect(square.x+square.sizeX-20, square.y,20, 20);
-        ctx.fillRect(square.x+square.sizeX-20, square.y+square.sizeY-20,20, 20);
+        ctx.drawImage(imagen_Info,square.x+square.sizeX-20, square.y,20, 20);
+        ctx.drawImage(imagen_Resize,square.x+square.sizeX-20, square.y+square.sizeY-20,20, 20);
 
         ctx.fillStyle = square.text_color;
         ctx.font = '20px Arial';
