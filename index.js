@@ -201,6 +201,16 @@ function modificar(){
     square[index_select] = cuadrado_select
     update()
 }
+document.getElementById("Eliminar").addEventListener("click",deleteCuadrado)
+
+function deleteCuadrado(){
+    var id=cuadrado_select.id
+    vector=vector.filter(x=>x.id_entry!=id&&x.id_exit!=id)
+    square.splice(index_select, 1);
+    container.classList.add("oculto")
+    cuadrado_select=undefined
+    update()
+}
 
 function Arrastrar(event) {
     if (click) {
