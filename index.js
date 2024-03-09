@@ -18,12 +18,14 @@ canvas.addEventListener('mousedown', function (event) {
     click = true;
     first = false;
     resize = false;
+    cursorMove=false;
     container.classList.add("oculto")
 })
 canvas.addEventListener('mouseup', function () {
     click = false;
     first = false;
     resize = false;
+    cursorMove=false;
     container.classList.add("oculto")
 });
 
@@ -152,7 +154,8 @@ function Seleccionar(event) {
 
     // Obtener las coordenadas del clic
     click = false;
-    first = false
+    first = false;
+    cursorMove=false;
     var x = event.clientX;
     var y = event.clientY;
     // Obtener las coordenadas relativas del clic dentro del canvas
@@ -264,6 +267,7 @@ function Arrastrar(event) {
                 }
             } else {
                 index_select = undefined
+                moverCanvas(canvasX,canvasY)
             }
 
         }
@@ -326,6 +330,55 @@ function conectar(){
 
 
 
+var cursorXAnterior=0;
+var cursorYAnterior=0;
+var cursorMove=false;
+
+var canvasXAbsolute=-50
+var canvasYAbsolute=-50
+
+
+function moverCanvas(cursorXActual,cursorYActual){
+
+    if(!cursorMove){
+        cursorXAnterior=cursorXActual;
+        cursorYAnterior=cursorYActual;
+        cursorMove=true
+
+    }else{
+        var difX=canvasXAbsolute-(cursorXAnterior-cursorXActual)*0.3
+        if(difX>-1400&&difX<200){
+            canvasXAbsolute=difX
+        }else{
+            if(difX<-1400){
+                canvasXAbsolute=-400
+            }if(difX> 200){
+                canvasXAbsolute=200
+            }
+        }
+        var difY=canvasYAbsolute-(cursorYAnterior-cursorYActual)*0.3
+        if(difY>-1400&&difY<200){
+            canvasYAbsolute=difY
+        }else{
+            if(difY< -1400){
+                canvasYAbsolute=-200
+            }if(difY> 200){
+                canvasYAbsolute=200
+            }
+        }
+        console.log(cursorXAnterior)
+        canvas.style.left=canvasXAbsolute+"px"
+        canvas.style.top=canvasYAbsolute+"px"
+
+
+    }
+    
+
+}
+
+
+canvas.style.left=canvasXAbsolute+"px"
+canvas.style.top=canvasYAbsolute+"px"
 
 document.getElementById("add").addEventListener('click', NewSquare)
 canvas.addEventListener('mousemove', Arrastrar)
