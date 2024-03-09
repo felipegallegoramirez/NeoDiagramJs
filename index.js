@@ -40,11 +40,37 @@ var squareI = [];
 var vector= []
 
 // Función para dibujar el cuadrado
+
+
+
+
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
-        console.log(vector)
-    vector.forEach(line=>{
+
+
+
+    var tamañoCuadricula = 40;
+    for (var y = 0; y < canvas.height; y += tamañoCuadricula) {
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.strokeStyle = '#ccc'; // Color de la línea
+        ctx.stroke();
+      }
+    
+      for (var x = 0; x < canvas.width; x += tamañoCuadricula) {
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.strokeStyle = '#ccc'; // Color de la línea
+        ctx.stroke();
+      }
+
+      vector.forEach(line=>{
+        ctx.beginPath();
         ctx.moveTo(line.x_exit, line.y_exit);
         ctx.lineTo(line.x_entry, line.y_entry);
         //ctx.strokeStyle = '#ff0080';
@@ -347,26 +373,25 @@ function moverCanvas(cursorXActual,cursorYActual){
 
     }else{
         var difX=canvasXAbsolute-(cursorXAnterior-cursorXActual)*0.3
-        if(difX>-1400&&difX<200){
+        if(difX>-(canvas.width-200)&&difX<200){
             canvasXAbsolute=difX
         }else{
-            if(difX<-1400){
-                canvasXAbsolute=-400
+            if(difX< -(canvas.width-200)){
+                canvasXAbsolute=-(canvas.width-200)
             }if(difX> 200){
                 canvasXAbsolute=200
             }
         }
         var difY=canvasYAbsolute-(cursorYAnterior-cursorYActual)*0.3
-        if(difY>-1400&&difY<200){
+        if(difY> -(canvas.height-200)&&difY<200){
             canvasYAbsolute=difY
         }else{
-            if(difY< -1400){
-                canvasYAbsolute=-200
+            if(difY< -(canvas.height-200)){
+                canvasYAbsolute=-(canvas.height-200)
             }if(difY> 200){
                 canvasYAbsolute=200
             }
         }
-        console.log(cursorXAnterior)
         canvas.style.left=canvasXAbsolute+"px"
         canvas.style.top=canvasYAbsolute+"px"
 
