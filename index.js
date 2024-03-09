@@ -5,6 +5,7 @@ var ctx = canvas.getContext('2d');
 var click = false;
 var first = false;
 var resize = false;
+var cursorMove=false;
 
 
 var imagen_Resize = new Image();
@@ -278,7 +279,7 @@ function Arrastrar(event) {
 
         }
         if (!first) {
-
+            if(!cursorMove){
             cuadrado_select = squareI.find(data => {
                 return canvasX >= data.x && canvasX <= (data.x + data.sizeX)
                     && canvasY >= data.y && canvasY <= (data.y + data.sizeY);
@@ -292,6 +293,9 @@ function Arrastrar(event) {
                     resize = true
                 }
             } else {
+                index_select = undefined
+                moverCanvas(canvasX,canvasY)
+            }}else{
                 index_select = undefined
                 moverCanvas(canvasX,canvasY)
             }
@@ -358,7 +362,7 @@ function conectar(){
 
 var cursorXAnterior=0;
 var cursorYAnterior=0;
-var cursorMove=false;
+
 
 var canvasXAbsolute=-50
 var canvasYAbsolute=-50
